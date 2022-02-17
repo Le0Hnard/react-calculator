@@ -9,7 +9,7 @@ let tempNum = "";
 let expression = [];
 
 export const CalcContainer = () => {
-  const [displayValue, setDisplayValue] = useState(0);
+  const [displayValue, setDisplayValue] = useState("0");
   const [opsOutput, setOpsOutput] = useState("");
 
   const handleClickNumbers = (value) => {
@@ -39,7 +39,7 @@ export const CalcContainer = () => {
     }
   
     if(expression.length === 0 && num === "") {
-      expression.push('0');
+      expression.push("s0");
       expression.push(value);
       setOpsOutput(expression.join(" "));
     }
@@ -73,6 +73,62 @@ export const CalcContainer = () => {
     num = "";
   };
 
+  const handleSignClick = () => {
+    if(tempNum !== "") {
+      if(parseFloat(tempNum) <= -1) {
+        tempNum = Math.abs(tempNum);
+        setDisplayValue(tempNum);
+      } else if(tempNum === "0") {
+        // tempNum = tempNum;
+        setDisplayValue(tempNum);
+      } else {
+        tempNum = "-" + tempNum;
+        setDisplayValue(tempNum);
+      }
+    }
+
+    if(parseFloat(num) <= -1) {
+      num = Math.abs(num);
+      setDisplayValue(num);
+    } else if(num === "" || num === "0") {
+      // num = 0;
+      // setDisplayValue(num);
+      return;
+    } else {
+      num = "-" + num;
+      setDisplayValue(num);
+    }
+
+    if(num === "" && displayValue !== "") {
+      return;
+    }
+  };
+
+  const handleZeroClick = () => {
+    tempNum = "";
+    if(displayValue !== "0"){
+      num += Number("0");
+      setDisplayValue(num)
+    } else {
+      return;
+    }
+  };
+
+  const handlePeriodBtnClick = (value) => {
+    const tempStr = displayValue;
+    const tempArr = tempStr.split("");
+
+    if(tempArr.indexOf(value) === -1 && tempStr !== "0") {
+      num += value;
+      setDisplayValue(num);
+    } else if(tempArr.indexOf(value) === -1 && tempStr === "0") {
+      num += "0" + value;
+      setDisplayValue(num);
+    } else {
+      return;
+    }
+  };
+
   const handleClickClear = () => {
     num = "";
     tempNum = "";
@@ -96,9 +152,9 @@ export const CalcContainer = () => {
       <DisplayScreen value={displayValue} opsValue={opsOutput} />
 
       <div className="row">
-        <Button classValue="button clear-btns" onClrBtnClick={handleClickClear} value="C" />
-        <Button classValue="button clear-btns" onClrEntBtnClick={handleClickClearEntry} value="CE" />
-        <Button value="+/-" />
+        <Button classValue="clear-btns" onClrBtnClick={handleClickClear} value="C" />
+        <Button classValue="clear-btns" onClrEntBtnClick={handleClickClearEntry} value="CE" />
+        <Button value="+/-" onSignButtonClick={handleSignClick} />
         <Button value="/" onOpBtnClick={handleOperationClick} />
       </div>
 
@@ -124,9 +180,9 @@ export const CalcContainer = () => {
       </div>
 
       <div className="row">
-        <Button value="0" onNumBtnClick={handleClickNumbers} />
-        <Button value="." />
-        <Button value="=" onEqBtnClick={handleComputeAnswer} />
+        <Button value="0" classValue="last-row-btns" onZeroBtnClick={handleZeroClick} />
+        <Button value="." classValue="last-row-btns" onPeriodBtnClick={handlePeriodBtnClick} />
+        <Button value="=" classValue="eq-btn" onEqBtnClick={handleComputeAnswer} />
       </div>
     </div>
   );

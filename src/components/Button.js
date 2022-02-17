@@ -1,21 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const Button = (props) => {
   const handleBtnClick = () => {
-    // switch (props.value) {
-    //   case 'C':
-    //     props.onClrBtnClick();
-    //     break;
-    //   case 'CE':
-    //     props.onClrEntBtnClick();
-    //     break;
-    //   case ("+" || "-" || "x" || "/"):
-    //     props.onOpBtnClick(props.value);
-    //     break;
-    //   default:
-    //     props.onNumBtnClick(props.value);
-    // }
-
     if(props.value === "C") {
       props.onClrBtnClick();
     } else if(props.value === "CE") {
@@ -24,7 +10,14 @@ const Button = (props) => {
       props.onOpBtnClick(props.value);
     } else if(props.value === "=") {
       props.onEqBtnClick();
-    } else {
+    } else if(props.value === "+/-") {
+      props.onSignButtonClick();
+    } else if(props.value === "0") {
+      props.onZeroBtnClick();
+    } else if(props.value === ".") {
+      props.onPeriodBtnClick(props.value);
+    }
+    else {
       props.onNumBtnClick(props.value);
     }
   };
